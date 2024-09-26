@@ -1,27 +1,9 @@
-import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 
 function LandingPage() {
   const login = () => {
     window.location.href = process.env.REACT_APP_API_URL + "/facebook";
   };
-
-  const fetchCurrentUser = () => {
-    axios
-      .get(process.env.REACT_APP_API_URL + "/current-user", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    fetchCurrentUser();
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">

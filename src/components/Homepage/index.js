@@ -1,39 +1,38 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/user-context";
 
 function Homepage() {
-  const [user, setUser] = React.useState({
-    name: "Guest",
-    email: "",
-    id: "",
-  });
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const onLogout = () => {
+  const handleLogout = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/logout", {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res);
+        toast.success(res.data.message);
       })
       .catch((err) => {
-        console.log(err);
+        toast(err.response.data.message);
+        navigate("/");
       });
   };
 
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-blue-600 text-white p-6">
-        <h1 className="text-3xl font-bold text-center">
-          Welcome, {user.name}!
-        </h1>
+        <h1 className="text-3xl font-bold text-center">Welcome!</h1>
       </header>
       <main className="flex-grow flex flex-col items-center justify-center p-8">
         <h2 className="text-2xl font-semibold">Your Details:</h2>
-        <p className="mt-4">Email: {user.email}</p>
-        <p className="mt-2">User ID: {user.id}</p>
+        <p className="mt-4">Email: {user?.email}</p>
+        <p className="mt-2">User ID: {user?.id}</p>
         <button
-          onClick={onLogout}
+          onClick={handleLogout}
           className="mt-6 bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 transition"
         >
           Logout
