@@ -1,6 +1,28 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 
 function LandingPage() {
+  const login = () => {
+    window.location.href = process.env.REACT_APP_API_URL + "/facebook";
+  };
+
+  const fetchCurrentUser = () => {
+    axios
+      .get(process.env.REACT_APP_API_URL + "/current-user", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-blue-600 text-white p-6">
@@ -10,13 +32,18 @@ function LandingPage() {
         </p>
       </header>
       <main className="flex-grow flex flex-col items-center justify-center p-8">
-        <h2 className="text-2xl font-semibold text-center">Why Choose Facebook Login?</h2>
+        <h2 className="text-2xl font-semibold text-center">
+          Why Choose Facebook Login?
+        </h2>
         <ul className="mt-4 text-center list-disc list-inside">
           <li>🔒 Secure Authentication</li>
           <li>⚡ Quick and Easy Login</li>
           <li>📱 Access on Any Device</li>
         </ul>
-        <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+        <button
+          className="mt-6 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition"
+          onClick={login}
+        >
           Login with Facebook
         </button>
       </main>
