@@ -1,17 +1,27 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Toaster } from "sonner";
+import LandingPage from "./components/Landing";
+import Homepage from "./components/Homepage";
 import "./App.css";
-import LandingPage from "./Landing";
-import Homepage from "./Homepage";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/homepage");
+    }
+  }, []);
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/homepage" element={<Homepage />} />
-        </Routes>
-      </BrowserRouter>
+      <Toaster position="top-right" richColors />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/homepage" element={<Homepage />} />
+      </Routes>
     </div>
   );
 }

@@ -1,27 +1,20 @@
-import axios from "axios";
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { toast } from "sonner";
 
 function LandingPage() {
+  const location = useLocation();
+
   const login = () => {
     window.location.href = process.env.REACT_APP_API_URL + "/facebook";
   };
 
-  const fetchCurrentUser = () => {
-    axios
-      .get(process.env.REACT_APP_API_URL + "/current-user", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
-    fetchCurrentUser();
-  }, []);
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get("error") === "login_failed") {
+      toast.error("Login was canceled or failed. Please try again.");
+    }
+  }, [location]);
 
   return (
     <div className="flex flex-col min-h-screen">
